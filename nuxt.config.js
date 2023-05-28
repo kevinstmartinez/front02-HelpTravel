@@ -1,6 +1,6 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-  srcDir: '',
+  srcDir: '.',
   head: {
     title: 'front-HelpTravel',
     htmlAttrs: {
@@ -22,7 +22,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    "~/style.css",
+    "./style.css",
   ],
 
   server: {
