@@ -1,6 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-  srcDir: './',
+
+  buildDir: 'nuxt-dist',
   head: {
     title: 'front-HelpTravel',
     htmlAttrs: {

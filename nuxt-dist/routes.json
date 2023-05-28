@@ -1,0 +1,79 @@
+[
+  {
+    "name": "cotizacion",
+    "path": "/cotizacion",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/cotizacion.vue",
+    "chunkName": "pages/cotizacion",
+    "_name": "_f0f5d0c4"
+  },
+  {
+    "name": "Entrega",
+    "path": "/Entrega",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/Entrega.vue",
+    "chunkName": "pages/Entrega",
+    "_name": "_c426aa52"
+  },
+  {
+    "name": "envio01",
+    "path": "/envio01",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/envio01.vue",
+    "chunkName": "pages/envio01",
+    "_name": "_6ca0ab53"
+  },
+  {
+    "name": "envio03",
+    "path": "/envio03",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/envio03.vue",
+    "chunkName": "pages/envio03",
+    "_name": "_6cbcda55"
+  },
+  {
+    "name": "envio04",
+    "path": "/envio04",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/envio04.vue",
+    "chunkName": "pages/envio04",
+    "_name": "_6ccaf1d6"
+  },
+  {
+    "name": "historialEnvio",
+    "path": "/historialEnvio",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/historialEnvio.vue",
+    "chunkName": "pages/historialEnvio",
+    "_name": "_6960a475"
+  },
+  {
+    "name": "lineaTiempo",
+    "path": "/lineaTiempo",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/lineaTiempo.vue",
+    "chunkName": "pages/lineaTiempo",
+    "_name": "_15df5328"
+  },
+  {
+    "name": "loading",
+    "path": "/loading",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/loading.vue",
+    "chunkName": "pages/loading",
+    "_name": "_71880c7b"
+  },
+  {
+    "name": "login",
+    "path": "/login",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/login.vue",
+    "chunkName": "pages/login",
+    "_name": "_12cbb9e8"
+  },
+  {
+    "name": "pago",
+    "path": "/pago",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/pago.vue",
+    "chunkName": "pages/pago",
+    "_name": "_35e8f92c"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/root1/Documents/lopez/front02-HelpTravel/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_492416d1"
+  }
+]
