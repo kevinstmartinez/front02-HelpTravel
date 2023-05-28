@@ -1,9 +1,12 @@
 <template>
     <div class="envio01-container">
         <div class="envio01-max-width">
-            <div class="envio01-container-sidelbar"><app-sidelbar></app-sidelbar></div>
+            <div class="envio01-container-sidelbar">
+                <app-sidelbar></app-sidelbar>
+                <router-view />
+            </div>
             <div class="envio01-menu-container">
-                <app-navbar1 rootClassName="navbar1-root-class-name"></app-navbar1>
+                <app-navbar1 rootClassName="navbar1-root-class-name" :menuItem="menuItem"></app-navbar1>
                 <div class="envio01-content-container">
                     <div class="envio01-text-container">
                         <h1 class="envio01-text">
@@ -108,6 +111,7 @@ export default {
     },
     data() {
         return {
+            menuItem: "Tipo de Servicio",
             rawdq25: ' ',
             rawd42b: ' ',
             raw685r: ' ',

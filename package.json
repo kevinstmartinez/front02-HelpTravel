@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.15.1",
     "@lottiefiles/vue-lottie-player": "^1.1.0",
     "@nuxtjs/dotenv": "^1.4.1",
     "@stripe/stripe-js": "^1.52.1",

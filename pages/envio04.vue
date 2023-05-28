@@ -3,7 +3,7 @@
         <div class="envio04-max-width">
             <div class="envio04-container-sidelbar"><app-sidelbar></app-sidelbar></div>
             <div class="envio04-menu-container">
-                <app-navbar1></app-navbar1>
+                <app-navbar1 :menuItem="menuItem"></app-navbar1>
                 <div class="envio04-content-container">
                     <div class="envio04-passenger-location">
                         <div class="envio04-max-width1">
@@ -32,24 +32,25 @@
                     </div>
                     <div class="envio04-destiny-location">
                         <div class="envio04-max-width3">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28983.933946670255!2d-74.14663765883155!3d4.688653393887887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9cb6430f8607%3A0x8eea5954ef14af30!2sAeropuerto%20Internacional%20El%20Dorado%20-%20Bogot%C3%A1%20(BOG)!5e0!3m2!1ses!2sco!4v1668815006214!5m2!1ses!2sco"
-                                class="envio04-iframe"></iframe>
+                            <div ref="map" class="envio04-iframe"></div>
                         </div>
                         <div class="envio04-max-width4">
                             <form class="envio04-form">
                                 <div class="envio04-container2">
                                     <label class="envio04-text08">Dirección de Envio</label>
-                                    <select v-model="departamentoSelect" @change="listarciudad" required class="envio04-select">
+                                    <select v-model="departamentoSelect" @change="listarciudad" required
+                                        class="envio04-select custom-select" :class="{ open: isOpen }">
                                         <option value="" disabled selected>Departamentos</option>
                                         <option v-for="departamento in departamentos" :key="departamento.id"
                                             :value="departamento.id">
                                             {{ departamento.departamento }}
                                         </option>
                                     </select>
-                                    <select v-model="ciudadesSelect" required class="envio04-select1">
+                                    <select v-model="ciudadesSelect" required class="envio04-select1"
+                                        @input="verificarCampos">
                                         <option value="" disabled selected>Ciudades</option>
-                                        <option v-for="ciudad in ciudades" :key="ciudad" :value="ciudad">{{ ciudad }}</option>
+                                        <option v-for="ciudad in ciudades" :key="ciudad" :value="ciudad">{{ ciudad }}
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="envio04-container3">
@@ -57,8 +58,9 @@
                                         <span>Tipo de domicilio</span>
                                         <br />
                                     </label>
-                                    <input type="text" required autofocus placeholder="Ej. Cra 5 # 21-38"
-                                        class="envio04-textinput2 input" />
+                                    <input v-model="direccion" type="text" required autofocus
+                                        placeholder="Ej. Cra 5 # 21-38" class="envio04-textinput2 input"
+                                        @input="verificarCampos" />
                                     <input type="text" required autofocus placeholder="Ej. Apartamento, Conjunto, Casa.."
                                         class="envio04-textinput3 input" />
                                     <textarea placeholder="Si tiene mas indicaciones, dejelas aqui"
@@ -89,6 +91,7 @@
   
 <script>
 import axios from 'axios';
+import { Loader } from '@googlemaps/js-api-loader';
 import AppSidelbar from '../components/sidelbar.vue'
 import AppNavbar1 from '../components/navbar1.vue'
 
@@ -102,36 +105,54 @@ export default {
 
     data() {
         return {
+            isOpen: false,
             raw9cd2: ' ',
             raw30qw: ' ',
+
+            menuItem: "Ubicacion",
 
             departamentos: [],
             departamentoSelect: '',
             ciudades: [],
-            ciudadesSelect: ''
+            ciudadesSelect: '',
+            direccion: '',
+
+            mapa: null,
+            marcadores: [],
+
         }
     },
     mounted() {
+
         this.listarDepart();
-        //this.listarciudad();
+
+        const loader = new Loader({
+            apiKey: 'AIzaSyAJsYlAHK7vsT2IeMMX3PYymiU2Czzo2Bk',
+            version: 'weekly',
+            libraries: ['places'], // Si necesitas utilizar la biblioteca 'places'
+        });
+
+        loader.load().then(() => {
+            this.initMap();
+        });
     },
     methods: {
         listarDepart() {
-            axios.get('http://localhost:3001/api/listarDp')
-            .then(respuesta => {
-                this.departamentos = respuesta.data.data;
-            })
-            .catch(error => {
-                this.$swal({
-                    title: 'ERROR',
-                    text: '¡Upss paso algo los departamento!',
-                    icon: 'warning',
-                    confirmButtonColor: 'red',
+            axios.get('http://localhost:8080/api/listarDp')
+                .then(respuesta => {
+                    this.departamentos = respuesta.data.data;
+                })
+                .catch(error => {
+                    this.$swal({
+                        title: 'ERROR',
+                        text: '¡Upss paso algo los departamento!',
+                        icon: 'warning',
+                        confirmButtonColor: 'red',
+                    });
                 });
-            });
         },
-        listarciudad(){
-            if(this.departamentoSelect !== ''){
+        listarciudad() {
+            if (this.departamentoSelect !== '') {
                 this.ciudades = this.departamentos.find(depa => depa.id === this.departamentoSelect)?.ciudades || []
             }
         },
@@ -142,8 +163,76 @@ export default {
                     ciudad: this.ciudadesSelect
                 }
             });
-        }
-    }
+        },
+        toggleDropdown() {
+            this.isOpen = !this.isOpen;
+        },
+        //////////////////// localizacion /////////////////////
+        initMap() {
+            // Obtén la ubicación del usuario
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+                const location = { lat: latitude, lng: longitude };
+
+                // Crea el mapa
+                this.mapa = new google.maps.Map(this.$refs.map, {
+                    center: location,
+                    zoom: 12,
+                });
+
+                // Crea un marcador en la ubicación del usuario
+                new google.maps.Marker({
+                    position: location,
+                    map: this.mapa,
+                });
+
+                // Centrar el mapa en la ubicación
+                this.mapa.setCenter(location);
+            },
+                (error) => {
+                    console.error(error);
+                }
+            );
+        },
+
+        verificarCampos() {
+            if (this.ciudadesSelect && this.direccion) {
+                this.agregarMarcador();
+            }
+        },
+
+        agregarMarcador() {
+            // Obtener la ubicación basada en los campos seleccionados
+            const ubicacion = `${this.direccion}, ${this.ciudadesSelect}`;
+            // Utilizar geocodificación para obtener las coordenadas de la ubicación
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: ubicacion }, (results, status) => {
+                if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+                    const { geometry } = results[0];
+                    const { location } = geometry;
+
+                    // Agregar un marcador en la ubicación
+                    new google.maps.Marker({
+                        position: location,
+                        map: this.mapa,
+                    });
+
+                    // Centrar el mapa en la ubicación
+                    this.mapa.setCenter(location);
+
+                } else {
+                    this.$swal({
+                        title: 'ERROR',
+                        text: '¡Error al geocodificar la dirección!',
+                        icon: 'warning',
+                        confirmButtonColor: 'red',
+                    });
+                    console.error('Error al geocodificar la dirección:', status);
+                }
+            });
+        },
+        //////////////////// localizacion /////////////////////
+    },
 }
 </script>
   
@@ -384,29 +473,22 @@ export default {
     border-style: dotted;
 }
 
-.envio04-textinput1 {
-    color: #495057;
-    height: 100%;
-    display: none;
-    font-size: 13px;
-    appearance: none;
-    transition: 0.3s;
-    font-weight: 400;
-    line-height: 22, 4px;
-    padding-top: var(--dl-space-space-halfunit);
-    border-color: #afafaf;
-    padding-left: 12px;
-    border-radius: var(--dl-radius-radius-radius8);
-    margin-bottom: var(--dl-space-space-oneandhalfunits);
-    padding-right: 12px;
-    padding-bottom: var(--dl-space-space-halfunit);
-    background-clip: padding-box;
+.custom-select::before {
+    content: "▼";
+    /* Agrega un símbolo de flecha hacia abajo */
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 4px);
+    /* Ajusta la posición verticalmente */
+    pointer-events: none;
+    /* Evita que se haga clic en el pseudo-elemento */
 }
 
-.envio04-textinput1:focus {
-    box-shadow: 0px 0px 10px 0px #fa7930;
-    border-color: var(--dl-color-backgrounds-primary);
-    border-style: dotted;
+.custom-select.open select {
+    max-height: 16px;
+    /* Establece la altura máxima del menú desplegable */
+    overflow-y: auto;
+    /* Añade una barra de desplazamiento vertical si es necesario */
 }
 
 .envio04-select1 {
@@ -580,7 +662,6 @@ export default {
 
 .envio04-text13:active {
     width: var(--dl-size-size-medium);
-}
-</style>
+}</style>
   
   

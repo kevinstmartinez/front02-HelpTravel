@@ -11,7 +11,7 @@
           </div>
           <div class="sidelbar-separador"></div>
           <div class="sidelbar-container-opcion">
-            <div class="sidelbar-opcion02">
+            <div class="sidelbar-opcion02" :class="{ 'active': isActive(['/envio01', '/envio03', '/envio04', '/cotizacion', '/pago']) }" @click="navigateToPage('/envio01')">
               <div class="sidelbar-container2">
                 <svg viewBox="0 0 1024 1024" class="sidelbar-icon">
                   <path
@@ -21,7 +21,7 @@
               </div>
               <span class="sidelbar-text1">Hacer un Envio</span>
             </div>
-            <div class="sidelbar-opcion01">
+            <div class="sidelbar-opcion01" :class="{'active': isActive('/historialEnvio')}" @click="navigateToPage('/historialEnvio')">
               <div class="sidelbar-container3">
                 <svg viewBox="0 0 1088 1024" class="sidelbar-icon2">
                   <path
@@ -31,7 +31,7 @@
               </div>
               <span class="sidelbar-text2">Historial Envios</span>
             </div>
-            <div class="sidelbar-opcion03">
+            <div class="sidelbar-opcion03" :class="{'active': isActive('/lineaTiempo')}" @click="navigateToPage('/lineaTiempo')">
               <div class="sidelbar-container4">
                 <svg viewBox="0 0 1024 1024" class="sidelbar-icon4">
                   <path
@@ -39,20 +39,7 @@
                   </path>
                 </svg>
               </div>
-              <span class="sidelbar-text3">Seguir mi envios</span>
-            </div>
-            <div class="sidelbar-opcion04">
-              <div class="sidelbar-container5">
-                <svg viewBox="0 0 1024 1024" class="sidelbar-icon6">
-                  <path
-                    d="M928 128h-832c-52.8 0-96 43.2-96 96v576c0 52.8 43.2 96 96 96h832c52.8 0 96-43.2 96-96v-576c0-52.8-43.2-96-96-96zM96 192h832c17.346 0 32 14.654 32 32v96h-896v-96c0-17.346 14.654-32 32-32zM928 832h-832c-17.346 0-32-14.654-32-32v-288h896v288c0 17.346-14.654 32-32 32zM128 640h64v128h-64zM256 640h64v128h-64zM384 640h64v128h-64z">
-                  </path>
-                </svg>
-              </div>
-              <span class="sidelbar-text4">
-                <span>Metodos de Pago</span>
-                <br />
-              </span>
+              <span class="sidelbar-text3">Seguir envios</span>
             </div>
           </div>
         </nav>
@@ -111,6 +98,26 @@ export default {
       default: 'image',
     },
   },
+  
+  mounted() {
+  },
+
+  methods: {
+    isActive(pages) {
+      //return this.$route.path === page;
+      return pages.includes(this.$route.path);
+    },
+    navigateToPage(page) {
+      this.$router.push(page);
+    }
+  },
+
+  watch: {
+    "$route.path"(newValue) {
+      console.log(newValue);
+    }
+  },
+
 }
 </script>
 
@@ -123,6 +130,7 @@ export default {
   align-items: flex-start;
   flex-direction: column;
 }
+
 .sidelbar-container1 {
   flex: 0 0 auto;
   height: 100%;
@@ -132,6 +140,7 @@ export default {
   flex-direction: column;
   border-top-left-radius: 0;
 }
+
 .sidelbar-sidebar {
   width: 100%;
   height: 100%;
@@ -145,6 +154,7 @@ export default {
   padding-bottom: 0px;
   justify-content: space-between;
 }
+
 .sidelbar-nav {
   width: 100%;
   height: 100%;
@@ -155,6 +165,7 @@ export default {
   letter-spacing: -.025rem;
   -webkit-font-smoothing: antialiased;
 }
+
 .sidelbar-container-logo {
   flex: 0 0 auto;
   width: auto;
@@ -174,11 +185,13 @@ export default {
   padding-bottom: 8px;
   justify-content: flex-start;
 }
+
 .sidelbar-image {
   width: auto;
   height: 60px;
   padding: 5px;
 }
+
 .sidelbar-text {
   color: #292524;
   font-size: 16px;
@@ -189,6 +202,7 @@ export default {
   font-weight: 700;
   text-transform: capitalize;
 }
+
 .sidelbar-separador {
   width: 120px;
   height: 1px;
@@ -204,6 +218,7 @@ export default {
   border-right-width: 0px;
   border-bottom-width: 0px;
 }
+
 .sidelbar-container-opcion {
   flex: 0 0 auto;
   width: auto;
@@ -217,35 +232,75 @@ export default {
   margin-bottom: 80px;
   flex-direction: column;
 }
+
 .sidelbar-opcion02 {
   width: auto;
   height: auto;
   display: flex;
   transition: 0.3s;
   align-items: center;
-  padding-top: 11px;
   padding-left: 16px;
   border-radius: 16px;
   padding-right: 16px;
   flex-direction: row;
-  padding-bottom: 11px;
   justify-content: center;
+
 }
-.sidelbar-opcion02:focus {
+
+.active {
   box-shadow: 0px 0px 10px 0px #a3a3a3;
   background-color: #EEEEEE;
 }
-.sidelbar-opcion02:hover {
-  box-shadow: 0px 0px 10px 0px #a3a3a3;
-  background-color: #EEEEEE;
+
+.active .sidelbar-container2 {
+  box-shadow: 0 .25rem .375rem -.0625rem rgba(20, 20, 20, .12), 0 .125rem .25rem -.0625rem rgba(20, 20, 20, .12) !important;
+  background: #ff983f;
 }
+
+.active .sidelbar-icon{
+  fill: #ffffa1;
+}
+
+.active .sidelbar-text1{
+  color: #292524;
+}
+
+
+.active .sidelbar-container3 {
+  box-shadow: 0 .25rem .375rem -.0625rem rgba(20, 20, 20, .12), 0 .125rem .25rem -.0625rem rgba(20, 20, 20, .12) !important;
+  background: #ff983f;
+}
+
+.active .sidelbar-icon2{
+  fill: #ffffa1;
+}
+
+.active .sidelbar-text2{
+  color: #292524;
+}
+
+
+
+.active .sidelbar-container4 {
+  box-shadow: 0 .25rem .375rem -.0625rem rgba(20, 20, 20, .12), 0 .125rem .25rem -.0625rem rgba(20, 20, 20, .12) !important;
+  background: #ff983f;
+}
+
+.active .sidelbar-icon4{
+  fill: #ffffa1;
+}
+
+.active .sidelbar-text3{
+  color: #292524;
+}
+
 .sidelbar-container2 {
   flex: 0 0 auto;
   width: 32px;
   height: 32px;
   display: flex;
   padding: var(--dl-space-space-halfunit);
-  box-shadow: 0 .25rem .375rem -.0625rem rgba(20,20,20,.12),0 .125rem .25rem -.0625rem rgba(20,20,20,.07)!important;
+  box-shadow: 0 .25rem .375rem -.0625rem rgba(20, 20, 20, .12), 0 .125rem .25rem -.0625rem rgba(20, 20, 20, .07) !important;
   margin-top: var(--dl-space-space-unit);
   align-items: center;
   margin-left: var(--dl-space-space-unit);
@@ -253,24 +308,27 @@ export default {
   border-radius: var(--dl-radius-radius-radius8);
   margin-bottom: var(--dl-space-space-unit);
   flex-direction: row;
-  background-image: linear-gradient(310deg,#e9ecef,#e9ecef);
+  background-image: linear-gradient(310deg, #e9ecef, #e9ecef);
 }
+
 .sidelbar-icon {
   fill: #78716c;
   width: 24px;
   height: 24px;
 }
+
 .sidelbar-text1 {
   color: #78716c;
   font-size: 14px;
   align-self: center;
   font-style: normal;
-  text-align: center;
+  text-align: left;
   font-family: Open Sans;
   font-weight: 500;
   margin-right: 0px;
   margin-bottom: 0px;
 }
+
 .sidelbar-opcion01 {
   width: auto;
   height: auto;
@@ -278,25 +336,30 @@ export default {
   margin-top: var(--dl-space-space-fourunits);
   transition: 0.3s;
   align-items: center;
-  padding-top: 11px;
   padding-left: 16px;
   border-radius: 16px;
   margin-bottom: var(--dl-space-space-fourunits);
   padding-right: 16px;
   flex-direction: row;
-  padding-bottom: 11px;
 }
-.sidelbar-opcion01:hover {
+
+.sidelbar-opcion01:focus {
   box-shadow: 0px 0px 10px 0px #a3a3a3;
   background-color: #EEEEEE;
 }
+
+.sidelbar-opcion01:active {
+  box-shadow: 0px 0px 10px 0px #a3a3a3;
+  background-color: #EEEEEE;
+}
+
 .sidelbar-container3 {
   flex: 0 0 auto;
   width: 32px;
   height: 32px;
   display: flex;
   padding: var(--dl-space-space-halfunit);
-  box-shadow: 0 .25rem .375rem -.0625rem rgba(20,20,20,.12),0 .125rem .25rem -.0625rem rgba(20,20,20,.07)!important;
+  box-shadow: 0 .25rem .375rem -.0625rem rgba(20, 20, 20, .12), 0 .125rem .25rem -.0625rem rgba(20, 20, 20, .07) !important;
   margin-top: var(--dl-space-space-unit);
   align-items: center;
   margin-left: var(--dl-space-space-unit);
@@ -304,13 +367,15 @@ export default {
   border-radius: var(--dl-radius-radius-radius8);
   margin-bottom: var(--dl-space-space-unit);
   flex-direction: row;
-  background-image: linear-gradient(310deg,#e9ecef,#e9ecef);
+  background-image: linear-gradient(310deg, #e9ecef, #e9ecef);
 }
+
 .sidelbar-icon2 {
   fill: #78716c;
   width: 24px;
   height: 24px;
 }
+
 .sidelbar-text2 {
   color: #78716c;
   font-size: 14px;
@@ -318,31 +383,37 @@ export default {
   font-family: Open Sans;
   font-weight: 600;
 }
+
 .sidelbar-opcion03 {
   width: auto;
   height: auto;
   display: flex;
   transition: 0.3s;
   align-items: center;
-  padding-top: 11px;
   padding-left: 16px;
   border-radius: 16px;
   margin-bottom: var(--dl-space-space-oneandhalfunits);
   padding-right: 16px;
   flex-direction: row;
-  padding-bottom: 11px;
 }
+
 .sidelbar-opcion03:focus {
-  outline: none;
-  box-shadow: 0px 0px 20px 0px #d4d4d4;
+  box-shadow: 0px 0px 10px 0px #a3a3a3;
+  background-color: #EEEEEE;
 }
+
+.sidelbar-opcion03:active {
+  box-shadow: 0px 0px 10px 0px #a3a3a3;
+  background-color: #EEEEEE;
+}
+
 .sidelbar-container4 {
   flex: 0 0 auto;
   width: 32px;
   height: 32px;
   display: flex;
   padding: var(--dl-space-space-halfunit);
-  box-shadow: 0 .25rem .375rem -.0625rem rgba(20,20,20,.12),0 .125rem .25rem -.0625rem rgba(20,20,20,.07)!important;
+  box-shadow: 0 .25rem .375rem -.0625rem rgba(20, 20, 20, .12), 0 .125rem .25rem -.0625rem rgba(20, 20, 20, .07) !important;
   margin-top: var(--dl-space-space-unit);
   align-items: center;
   margin-left: var(--dl-space-space-unit);
@@ -350,13 +421,15 @@ export default {
   border-radius: var(--dl-radius-radius-radius8);
   margin-bottom: var(--dl-space-space-unit);
   flex-direction: row;
-  background-image: linear-gradient(310deg,#e9ecef,#e9ecef);
+  background-image: linear-gradient(310deg, #e9ecef, #e9ecef);
 }
+
 .sidelbar-icon4 {
   fill: #78716c;
   width: 24px;
   height: 24px;
 }
+
 .sidelbar-text3 {
   color: #78716c;
   font-size: 14px;
@@ -364,6 +437,7 @@ export default {
   font-family: Open Sans;
   font-weight: 500;
 }
+
 .sidelbar-opcion04 {
   width: auto;
   height: 70px;
@@ -380,10 +454,12 @@ export default {
   flex-direction: row;
   padding-bottom: 10.8px;
 }
+
 .sidelbar-opcion04:focus {
   outline: none;
   box-shadow: 0px 0px 20px 0px #d4d4d4;
 }
+
 .sidelbar-container5 {
   flex: 0 0 auto;
   width: 32px;
@@ -391,17 +467,19 @@ export default {
   margin: var(--dl-space-space-unit);
   display: flex;
   padding: var(--dl-space-space-halfunit);
-  box-shadow: 0 .25rem .375rem -.0625rem rgba(20,20,20,.12),0 .125rem .25rem -.0625rem rgba(20,20,20,.07)!important;
+  box-shadow: 0 .25rem .375rem -.0625rem rgba(20, 20, 20, .12), 0 .125rem .25rem -.0625rem rgba(20, 20, 20, .07) !important;
   align-items: center;
   border-radius: var(--dl-radius-radius-radius8);
   flex-direction: row;
-  background-image: linear-gradient(310deg,#e9ecef,#e9ecef);
+  background-image: linear-gradient(310deg, #e9ecef, #e9ecef);
 }
+
 .sidelbar-icon6 {
   fill: #344767;
   width: 24px;
   height: 24px;
 }
+
 .sidelbar-text4 {
   color: #344767;
   font-size: 14px;
@@ -411,9 +489,11 @@ export default {
   margin-right: 22px;
   margin-bottom: 0px;
 }
+
 .sidelbar-root-class-name {
   height: 100%;
 }
+
 @media(max-width: 767px) {
   .sidelbar-sidebar {
     height: 70vh;

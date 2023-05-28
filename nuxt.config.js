@@ -15,7 +15,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
     script: [
-      { src: 'https://js.stripe.com/v3/' }
+      { src: 'https://js.stripe.com/v3/' },
     ]
   },
 
@@ -25,7 +25,7 @@ export default {
   ],
 
   server: {
-    port: 8080
+    port: 3000
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

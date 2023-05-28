@@ -1,9 +1,12 @@
 <template>
     <div class="envio03-container">
         <div class="envio03-max-width">
-            <div class="envio03-container-sidelbar"><app-sidelbar></app-sidelbar></div>
+            <div class="envio03-container-sidelbar">
+                <app-sidelbar></app-sidelbar>
+                <router-view />
+            </div>
             <div class="envio03-menu-container">
-                <app-navbar1></app-navbar1>
+                <app-navbar1 :menuItem="menuItem"></app-navbar1>
                 <div class="envio03-content-container">
                     <div class="envio03-container-articulo">
                         <div class="envio03-text-container">
@@ -157,6 +160,9 @@ export default {
     },
     data() {
         return {
+
+            menuItem: "Contenido del Paquete",
+
             categorias: [],
             categoriaSelect: '',
             itemsCar: [],
@@ -175,7 +181,7 @@ export default {
     mounted() {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
-        axios.get('http://localhost:3001/api/categori')
+        axios.get('http://localhost:8080/api/categori')
             .then(respuesta => {
                 this.categorias = respuesta.data
             })
@@ -187,7 +193,7 @@ export default {
                     confirmButtonColor: 'red',
                 });
             });
-        axios.get('http://localhost:3001/api/get-Cart')
+        axios.get('http://localhost:8080/api/get-Cart')
             .then(respuesta => {
                 this.itemsCar = respuesta.data.cart
                 this.box = respuesta.data.assigned_box
@@ -217,7 +223,7 @@ export default {
 
             if (totalpeso <= 50 ) {
 
-                await axios.post('http://localhost:3001/api/send-Cart', {
+                await axios.post('http://localhost:8080/api/send-Cart', {
                     id_category: this.categoriaSelect,
                     quantity: this.NumItems,
                     weight: this.peso,
@@ -235,7 +241,7 @@ export default {
                         });
                     });
 
-                await axios.get('http://localhost:3001/api/get-Cart')
+                await axios.get('http://localhost:8080/api/get-Cart')
                     .then(respuesta => {
                         this.itemsCar = respuesta.data.cart
                         this.box = respuesta.data.assigned_box
@@ -275,7 +281,7 @@ export default {
         },
 
         async deleteItem(id) {
-            await axios.delete('http://localhost:3001/api/deleteItemCart/' + id)
+            await axios.delete('http://localhost:8080/api/deleteItemCart/' + id)
                 .then(res => {
                     console.log(res);
                 })
@@ -283,7 +289,7 @@ export default {
                     console.log(e);
                 });
 
-            await axios.get('http://localhost:3001/api/get-Cart')
+            await axios.get('http://localhost:8080/api/get-Cart')
                 .then(respuesta => {
                     this.itemsCar = respuesta.data.cart
                     this.box = respuesta.data.assigned_box
