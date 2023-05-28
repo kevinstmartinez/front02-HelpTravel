@@ -181,7 +181,7 @@ export default {
     mounted() {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
-        axios.get('http://localhost:8080/api/categori')
+        axios.get('https://backend-helptravel-production.up.railway.app/api/categori')
             .then(respuesta => {
                 this.categorias = respuesta.data
             })
@@ -193,7 +193,7 @@ export default {
                     confirmButtonColor: 'red',
                 });
             });
-        axios.get('http://localhost:8080/api/get-Cart')
+        axios.get('https://backend-helptravel-production.up.railway.app/api/get-Cart')
             .then(respuesta => {
                 this.itemsCar = respuesta.data.cart
                 this.box = respuesta.data.assigned_box
@@ -223,7 +223,7 @@ export default {
 
             if (totalpeso <= 50 ) {
 
-                await axios.post('http://localhost:8080/api/send-Cart', {
+                await axios.post('https://backend-helptravel-production.up.railway.app/api/send-Cart', {
                     id_category: this.categoriaSelect,
                     quantity: this.NumItems,
                     weight: this.peso,
@@ -241,7 +241,7 @@ export default {
                         });
                     });
 
-                await axios.get('http://localhost:8080/api/get-Cart')
+                await axios.get('https://backend-helptravel-production.up.railway.app/api/get-Cart')
                     .then(respuesta => {
                         this.itemsCar = respuesta.data.cart
                         this.box = respuesta.data.assigned_box
@@ -281,7 +281,7 @@ export default {
         },
 
         async deleteItem(id) {
-            await axios.delete('http://localhost:8080/api/deleteItemCart/' + id)
+            await axios.delete('https://backend-helptravel-production.up.railway.app/api/deleteItemCart/' + id)
                 .then(res => {
                     console.log(res);
                 })
@@ -289,7 +289,7 @@ export default {
                     console.log(e);
                 });
 
-            await axios.get('http://localhost:8080/api/get-Cart')
+            await axios.get('https://backend-helptravel-production.up.railway.app/api/get-Cart')
                 .then(respuesta => {
                     this.itemsCar = respuesta.data.cart
                     this.box = respuesta.data.assigned_box

@@ -109,7 +109,7 @@ export default {
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
-    await axios.get('http://localhost:8080/api/get-Cart')
+    await axios.get('https://backend-helptravel-production.up.railway.app/api/get-Cart')
       .then(respuesta => {
         this.height = respuesta.data.assigned_box.height
         this.width = respuesta.data.assigned_box.width
@@ -126,7 +126,7 @@ export default {
         });
       });
 
-    await axios.post('http://localhost:8080/api/quote', {
+    await axios.post('https://backend-helptravel-production.up.railway.app/api/quote', {
       destiny: ciudad,
       height: this.height,
       width: this.width,

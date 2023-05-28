@@ -138,7 +138,7 @@ export default {
     },
     methods: {
         listarDepart() {
-            axios.get('http://localhost:8080/api/listarDp')
+            axios.get('https://backend-helptravel-production.up.railway.app/api/listarDp')
                 .then(respuesta => {
                     this.departamentos = respuesta.data.data;
                 })
